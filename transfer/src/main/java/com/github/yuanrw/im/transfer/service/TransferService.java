@@ -9,11 +9,10 @@ import com.github.yuanrw.im.protobuf.generate.Ack;
 import com.github.yuanrw.im.protobuf.generate.Chat;
 import com.github.yuanrw.im.protobuf.generate.Internal;
 import com.github.yuanrw.im.transfer.domain.ConnectorConnContext;
-import com.github.yuanrw.im.transfer.start.TransferMqProducer;
+import com.github.yuanrw.im.transfer.start.TransferKafkaProducer;
 import com.github.yuanrw.im.transfer.start.TransferStarter;
 import com.google.inject.Inject;
 import com.google.protobuf.Message;
-import com.rabbitmq.client.MessageProperties;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.io.IOException;
@@ -24,12 +23,13 @@ import java.io.IOException;
 public class TransferService {
 
     private ConnectorConnContext connContext;
-    private TransferMqProducer producer;
+//    private TransferMqProducer producer;
+    private TransferKafkaProducer producer;
 
     @Inject
     public TransferService(ConnectorConnContext connContext) {
         this.connContext = connContext;
-        this.producer = TransferStarter.producer;
+        this.producer = TransferStarter.kafkaProducer;
     }
 
     public void doChat(Chat.ChatMsg msg) throws IOException {
@@ -81,7 +81,8 @@ public class TransferService {
      * @description  send offline msg to MQ
      */
     private void doOffline(Message msg) throws IOException {
-        producer.basicPublish(ImConstant.MQ_EXCHANGE, ImConstant.MQ_ROUTING_KEY,
-            MessageProperties.PERSISTENT_TEXT_PLAIN, msg);
+//        producer.basicPublish(ImConstant.MQ_EXCHANGE, ImConstant.MQ_ROUTING_KEY,
+//            MessageProperties.PERSISTENT_TEXT_PLAIN, msg);
+        producer.produce(ImConstant.KAFKA_TOPIC, msg);
     }
 }

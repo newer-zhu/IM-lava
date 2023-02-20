@@ -12,17 +12,17 @@ import java.util.stream.Stream;
 public enum MsgTypeEnum {
 
     /**
-     * 聊天消息
+     * chat msg
      */
     CHAT(0, Chat.ChatMsg.class),
 
     /**
-     * 内部消息
+     * app internal msg
      */
     INTERNAL(1, Internal.InternalMsg.class),
 
     /**
-     * ack消息
+     *  app ack msg
      */
     ACK(2, Ack.AckMsg.class);
 

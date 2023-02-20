@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
- * Transfer服务端
+ * Transfer Netty Server Starter
  */
 public class TransferServer {
     private static Logger logger = LoggerFactory.getLogger(TransferServer.class);

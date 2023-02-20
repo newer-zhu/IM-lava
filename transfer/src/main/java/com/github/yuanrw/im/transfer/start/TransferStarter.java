@@ -5,6 +5,7 @@ import com.github.yuanrw.im.transfer.config.TransferConfig;
 import com.github.yuanrw.im.transfer.config.TransferModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
@@ -20,7 +21,8 @@ import java.util.Properties;
  */
 public class TransferStarter {
     public static TransferConfig TRANSFER_CONFIG = new TransferConfig();
-    public static TransferMqProducer producer;
+//    public static TransferMqProducer producer;
+    public static TransferKafkaProducer kafkaProducer;
     static Injector injector = Guice.createInjector(new TransferModule());
 
     public static void main(String[] args) {
@@ -29,8 +31,16 @@ public class TransferStarter {
             TransferStarter.TRANSFER_CONFIG = parseConfig();
 
             //start rabbitmq server
-            producer = new TransferMqProducer(TRANSFER_CONFIG.getRabbitmqHost(), TRANSFER_CONFIG.getRabbitmqPort(),
-                TRANSFER_CONFIG.getRabbitmqUsername(), TRANSFER_CONFIG.getRabbitmqPassword());
+//            producer = new TransferMqProducer(TRANSFER_CONFIG.getRabbitmqHost(), TRANSFER_CONFIG.getRabbitmqPort(),
+//                TRANSFER_CONFIG.getRabbitmqUsername(), TRANSFER_CONFIG.getRabbitmqPassword());
+            Properties mqProperties = new Properties();
+            mqProperties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, TRANSFER_CONFIG.getKafkaBootstrap());
+            mqProperties.put(ProducerConfig.ACKS_CONFIG, TRANSFER_CONFIG.getKafkaAcks());
+            mqProperties.put(ProducerConfig.RETRIES_CONFIG, TRANSFER_CONFIG.getKafkaRetries());
+            mqProperties.put(ProducerConfig.BATCH_SIZE_CONFIG, TRANSFER_CONFIG.getKafkaBatch());
+            mqProperties.put(ProducerConfig.LINGER_MS_CONFIG, TRANSFER_CONFIG.getKafkaLinger());
+            mqProperties.put(ProducerConfig.BUFFER_MEMORY_CONFIG, TRANSFER_CONFIG.getKafkaBuffer());
+            kafkaProducer = new TransferKafkaProducer(mqProperties);
 
             //start transfer server
             TransferServer.startTransferServer(TRANSFER_CONFIG.getPort());
@@ -45,13 +55,17 @@ public class TransferStarter {
         TransferConfig transferConfig = new TransferConfig();
         try {
             transferConfig.setPort(Integer.parseInt((String) properties.get("port")));
+            //redis
             transferConfig.setRedisHost(properties.getProperty("redis.host"));
             transferConfig.setRedisPort(Integer.parseInt(properties.getProperty("redis.port")));
             transferConfig.setRedisPassword(properties.getProperty("redis.password"));
-            transferConfig.setRabbitmqHost(properties.getProperty("rabbitmq.host"));
-            transferConfig.setRabbitmqUsername(properties.getProperty("rabbitmq.username"));
-            transferConfig.setRabbitmqPassword(properties.getProperty("rabbitmq.password"));
-            transferConfig.setRabbitmqPort(Integer.parseInt(properties.getProperty("rabbitmq.port")));
+            //kafka
+            transferConfig.setKafkaAcks(properties.getProperty("kafka.acks"));
+            transferConfig.setKafkaBootstrap(properties.getProperty("kafka.bootstrap"));
+            transferConfig.setKafkaRetries(Integer.parseInt(properties.getProperty("kafka.retries")));
+            transferConfig.setKafkaBatch(Integer.parseInt(properties.getProperty("kafka.batch")));
+            transferConfig.setKafkaLinger(Integer.parseInt(properties.getProperty("kafka.linger")));
+            transferConfig.setKafkaBuffer(Long.parseLong(properties.getProperty("kafka.buffer")));
         } catch (Exception e) {
             throw new ImException("there's a parse error, check your config properties");
         }

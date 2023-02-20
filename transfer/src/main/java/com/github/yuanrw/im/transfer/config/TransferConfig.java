@@ -21,6 +21,54 @@ public class TransferConfig {
 
     private String rabbitmqPassword;
 
+    private Long kafkaBuffer;
+    private Integer kafkaLinger;
+    private Integer kafkaBatch;
+    private Integer kafkaRetries;
+
+    public Integer getKafkaRetries() {
+        return kafkaRetries;
+    }
+
+    public void setKafkaRetries(Integer kafkaRetries) {
+        this.kafkaRetries = kafkaRetries;
+    }
+
+    public Long getKafkaBuffer() {
+        return kafkaBuffer;
+    }
+
+    public void setKafkaBuffer(Long kafkaBuffer) {
+        this.kafkaBuffer = kafkaBuffer;
+    }
+
+    public Integer getKafkaLinger() {
+        return kafkaLinger;
+    }
+
+    public void setKafkaLinger(Integer kafkaLinger) {
+        this.kafkaLinger = kafkaLinger;
+    }
+
+    private String kafkaAcks;
+    private String kafkaBootstrap;
+
+    public String getKafkaAcks() {
+        return kafkaAcks;
+    }
+
+    public void setKafkaAcks(String kafkaAcks) {
+        this.kafkaAcks = kafkaAcks;
+    }
+
+    public String getKafkaBootstrap() {
+        return kafkaBootstrap;
+    }
+
+    public void setKafkaBootstrap(String kafkaBootstrap) {
+        this.kafkaBootstrap = kafkaBootstrap;
+    }
+
     public Integer getPort() {
         return port;
     }
@@ -83,5 +131,13 @@ public class TransferConfig {
 
     public void setRabbitmqPassword(String rabbitmqPassword) {
         this.rabbitmqPassword = rabbitmqPassword;
+    }
+
+    public Integer getKafkaBatch() {
+        return kafkaBatch;
+    }
+
+    public void setKafkaBatch(Integer kafkaBatch) {
+        this.kafkaBatch = kafkaBatch;
     }
 }
