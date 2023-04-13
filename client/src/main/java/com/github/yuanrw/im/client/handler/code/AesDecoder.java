@@ -29,7 +29,7 @@ public class AesDecoder extends MessageToMessageDecoder<Message> {
             Relation relation = userContext.getRelation(cm.getFromId(), cm.getDestId());
             String[] keys = relation.getEncryptKey().split("\\|");
 
-            //解码消息
+            //decode
             byte[] decodeBody = Encryption.decrypt(keys[0], keys[1], cm.getMsgBody().toByteArray());
             Chat.ChatMsg decodeMsg = Chat.ChatMsg.newBuilder().mergeFrom(cm)
                 .setMsgBody(ByteString.copyFrom(decodeBody)).build();

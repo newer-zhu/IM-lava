@@ -6,9 +6,7 @@ import com.github.yuanrw.im.protobuf.generate.Internal;
 
 import java.util.stream.Stream;
 
-/**
- * 消息类型枚举
- */
+
 public enum MsgTypeEnum {
 
     /**

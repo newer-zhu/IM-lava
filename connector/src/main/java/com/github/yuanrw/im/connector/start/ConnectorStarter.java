@@ -11,9 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-/**
- * Connector启动器
- */
 public class ConnectorStarter {
     public static ConnectorConfig CONNECTOR_CONFIG = new ConnectorConfig();
     public static Injector injector = Guice.createInjector(new ConnectorModule());

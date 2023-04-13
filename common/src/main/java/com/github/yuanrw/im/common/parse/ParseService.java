@@ -11,9 +11,6 @@ import com.google.protobuf.Message;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * 提取消息
- */
 public class ParseService {
 
     private Map<MsgTypeEnum, Parse> parseFunctionMap;

@@ -65,9 +65,6 @@ public class ChatApi {
         userContext.getClientConnectorHandler().writeAndFlush(connectionId, id, msg);
     }
 
-    /**
-     * @description 确定已读
-     */
     public void confirmRead(Chat.ChatMsg msg) {
         Ack.AckMsg read = Ack.AckMsg.newBuilder()
             .setId(IdWorker.nextId(connectionId))

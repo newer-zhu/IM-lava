@@ -12,7 +12,7 @@ import java.util.Properties;
 import static com.github.yuanrw.im.transfer.start.TransferStarter.TRANSFER_CONFIG;
 
 /**
- * store transfer module and connector module
+ * store ChannelHandlerContext between transfer module and connector module
  */
 @Singleton
 public class ConnectorConnContext extends MemoryConnContext<ConnectorConn> {

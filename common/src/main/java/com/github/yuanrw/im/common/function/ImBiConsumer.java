@@ -1,8 +1,6 @@
 package com.github.yuanrw.im.common.function;
 
-/**
- * 函数式接口
- */
+
 @FunctionalInterface
 public interface ImBiConsumer<T, U> {
 

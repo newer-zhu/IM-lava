@@ -29,7 +29,7 @@ import static com.github.yuanrw.im.common.parse.AbstractMsgParser.checkDest;
 import static com.github.yuanrw.im.common.parse.AbstractMsgParser.checkFrom;
 
 /**
- * handler to deal msg from client module
+ * this handler deals with msgs that came from client module
  */
 public class ConnectorClientHandler extends SimpleChannelInboundHandler<Message> {
     private Logger logger = LoggerFactory.getLogger(ConnectorClientHandler.class);

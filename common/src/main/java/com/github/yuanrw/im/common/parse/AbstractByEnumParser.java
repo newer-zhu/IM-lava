@@ -9,9 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-/**
- * 消息枚举类型解析抽象类
- */
+
 public abstract class AbstractByEnumParser<E extends ProtocolMessageEnum, M extends Message> {
 
     private Map<E, ImBiConsumer<M, ChannelHandlerContext>> parseMap;
@@ -24,18 +22,8 @@ public abstract class AbstractByEnumParser<E extends ProtocolMessageEnum, M exte
         parseMap.put(type, consumer);
     }
 
-    /**
-     * 获取枚举
-     *
-     * @param msg
-     * @return
-     */
     protected abstract E getType(M msg);
 
-    /**
-     *  获取与类对应的ImBiConsumer
-     * @return
-     */
     public ImBiConsumer<M, ChannelHandlerContext> generateFun() {
         return (m, ctx) -> Optional.ofNullable(parseMap.get(getType(m)))
             .orElseThrow(() -> new IllegalArgumentException("Invalid msg enum " + m.toString()))

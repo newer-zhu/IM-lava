@@ -4,7 +4,7 @@ import com.github.yuanrw.im.protobuf.generate.Chat;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
- * 消息动作监听，用于回调
+ * hook
  */
 public interface ClientMsgListener {
 
@@ -14,14 +14,14 @@ public interface ClientMsgListener {
     void online();
 
     /**
-     * read a msg
+     * read a msg from connector
      *
      * @param chatMsg
      */
     void read(Chat.ChatMsg chatMsg);
 
     /**
-     * do when a msg has been sent
+     * do when a msg has been sent to connector
      *
      * @param id chatMsg msg id
      */
@@ -47,7 +47,7 @@ public interface ClientMsgListener {
     void offline();
 
     /**
-     * a exception is occurred
+     * an exception is occurred
      *
      * @param ctx
      * @param cause

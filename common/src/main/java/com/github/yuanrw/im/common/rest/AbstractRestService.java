@@ -24,7 +24,6 @@ public abstract class AbstractRestService<R> {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        //rest客户端
         Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(url)
             .addConverterFactory(JacksonConverterFactory.create(objectMapper))
@@ -51,11 +50,10 @@ public abstract class AbstractRestService<R> {
         }
     }
 
-    //函数式参数
     @FunctionalInterface
     protected interface RestFunction<T> {
         /**
-         * 执行一个http请求
+         * execute a http request
          *
          * @return
          * @throws IOException

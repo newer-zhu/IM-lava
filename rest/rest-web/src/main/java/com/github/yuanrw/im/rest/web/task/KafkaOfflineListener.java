@@ -11,6 +11,8 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.PartitionOffset;
+import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -38,7 +40,9 @@ public class KafkaOfflineListener {
         logger.info("[KafkaOfflineListener] Start listening Offline queue......");
     }
 
-    @KafkaListener(topics = ImConstant.KAFKA_TOPIC)
+    @KafkaListener(topicPartitions =  {
+            @TopicPartition(topic = ImConstant.KAFKA_TOPIC,
+            partitions = {"0"})})
     public void onMessage(ConsumerRecord<String, Message> record){
         try {
             Message message = record.value();
@@ -53,8 +57,6 @@ public class KafkaOfflineListener {
 
         } catch (Exception e) {
             logger.error("[OfflineConsumer] has error", e);
-        } finally {
-
         }
     }
 }

@@ -14,9 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-/**
- * 消息内容加密器
- */
+
 public class AesEncoder extends MessageToMessageEncoder<Message> {
     private static final Logger logger = LoggerFactory.getLogger(MsgDecoder.class);
 

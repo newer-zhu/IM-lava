@@ -35,20 +35,13 @@ public class UserApi {
         this.handler = handler;
     }
 
-    /**
-     * 获取好友
-     * @param relations
-     * @param userId
-     * @return
-     */
     private static List<Friend> getFriends(List<RelationDetail> relations, String userId) {
         return relations.stream().map(r -> {
             Friend friend = new Friend();
-            //relation里别人是自己的friend
             if (r.getUserId1().equals(userId)) {
                 friend.setUserId(r.getUserId2());
                 friend.setUsername(r.getUsername2());
-            } else {//自己是别人的friend
+            } else {
                 friend.setUserId(r.getUserId1());
                 friend.setUsername(r.getUsername1());
             }

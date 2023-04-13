@@ -1,15 +1,12 @@
 package com.github.yuanrw.im.connector.config;
 
-/**
- * Connector配置
- */
 public class ConnectorConfig {
 
     private Integer port;
     private String[] transferUrls;
     private String restUrl;
     /**
-     * @description redis配置
+     * @description redis config
      */
     private String redisHost;
     private Integer redisPort;

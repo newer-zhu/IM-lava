@@ -47,18 +47,12 @@ public abstract class AbstractMsgParser {
         }
     }
 
-    /**
-     * 注册msg处理方法
-     */
     public abstract void registerParsers();
 
     protected <T extends Message> void register(Class<T> clazz, ImBiConsumer<T, ChannelHandlerContext> consumer) {
         parserMap.put(clazz, consumer);
     }
 
-    /**
-     * @description 处理消息
-     */
     @SuppressWarnings("unchecked")
     public void parse(Message msg, ChannelHandlerContext ctx) {
         ImBiConsumer consumer = parserMap.get(msg.getClass());

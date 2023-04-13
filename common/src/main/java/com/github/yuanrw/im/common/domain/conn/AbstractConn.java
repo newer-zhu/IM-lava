@@ -22,12 +22,6 @@ public abstract class AbstractConn implements Conn {
         this.ctx.channel().attr(Conn.NET_ID).set(netId);
     }
 
-    /**
-     * 生成连接id
-     *
-     * @param ctx
-     * @return
-     */
     protected abstract Serializable generateNetId(ChannelHandlerContext ctx);
 
     @Override

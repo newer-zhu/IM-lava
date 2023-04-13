@@ -28,4 +28,10 @@ public interface UserStatusService {
      * @return
      */
     String getConnectorId(String userId);
+
+    /**
+     * whether user online or not
+     * @return
+     */
+    Boolean isOnline(String userId);
 }

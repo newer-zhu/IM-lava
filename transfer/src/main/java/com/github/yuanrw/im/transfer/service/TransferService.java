@@ -23,7 +23,7 @@ import java.io.IOException;
 public class TransferService {
 
     private ConnectorConnContext connContext;
-//    private TransferMqProducer producer;
+
     private TransferKafkaProducer producer;
 
     @Inject
@@ -53,16 +53,14 @@ public class TransferService {
     }
 
     /**
-     * first connection, save it to connContext
-     * @param msg
-     * @param ctx
+     * first connection, set the NET_ID and save it to connContext's map
      */
-    public void doGreet(Internal.InternalMsg msg, ChannelHandlerContext ctx) {
-        ctx.channel().attr(Conn.NET_ID).set(msg.getMsgBody());
+    public void doGreet(Internal.InternalMsg greetMsg, ChannelHandlerContext ctx) {
+        ctx.channel().attr(Conn.NET_ID).set(greetMsg.getMsgBody());
         ConnectorConn conn = new ConnectorConn(ctx);
         connContext.addConn(conn);
 
-        ctx.writeAndFlush(getInternalAck(msg.getId()));
+        ctx.writeAndFlush(getInternalAck(greetMsg.getId()));
     }
 
     private Internal.InternalMsg getInternalAck(Long msgId) {
@@ -81,8 +79,6 @@ public class TransferService {
      * @description  send offline msg to MQ
      */
     private void doOffline(Message msg) throws IOException {
-//        producer.basicPublish(ImConstant.MQ_EXCHANGE, ImConstant.MQ_ROUTING_KEY,
-//            MessageProperties.PERSISTENT_TEXT_PLAIN, msg);
         producer.produce(ImConstant.KAFKA_TOPIC, msg);
     }
 }

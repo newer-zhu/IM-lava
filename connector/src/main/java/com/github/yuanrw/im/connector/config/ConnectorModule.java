@@ -6,9 +6,6 @@ import com.github.yuanrw.im.user.status.service.impl.RedisUserStatusServiceImpl;
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
-/**
- * connector注入
- */
 public class ConnectorModule extends AbstractModule {
 
     @Override

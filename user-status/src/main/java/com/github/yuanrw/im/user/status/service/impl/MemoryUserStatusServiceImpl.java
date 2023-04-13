@@ -31,4 +31,9 @@ public class MemoryUserStatusServiceImpl implements UserStatusService {
     public String getConnectorId(String userId) {
         return userIdConnectorIdMap.get(userId);
     }
+
+    @Override
+    public Boolean isOnline(String userId) {
+        return userIdConnectorIdMap.containsKey(userId);
+    }
 }

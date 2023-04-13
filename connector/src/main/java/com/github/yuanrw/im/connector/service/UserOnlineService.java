@@ -46,7 +46,7 @@ public class UserOnlineService {
     }
 
     public ClientConn userOnline(String userId, ChannelHandlerContext ctx) {
-        //get all offline msg and send
+        //get all offline msgs and send to client
         List<Message> msgs = offlineService.pollOfflineMsg(userId);
         msgs.forEach(msg -> {
             try {

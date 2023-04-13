@@ -12,9 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-/**
- * @description 解码器
- */
+
 public class MsgDecoder extends ByteToMessageDecoder {
     private static final Logger logger = LoggerFactory.getLogger(MsgDecoder.class);
 

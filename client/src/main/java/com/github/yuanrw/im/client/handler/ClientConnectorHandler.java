@@ -67,18 +67,13 @@ public class ClientConnectorHandler extends SimpleChannelInboundHandler<Message>
         //check protobuf msg's form
         checkFrom(msg, Internal.InternalMsg.Module.CONNECTOR);
         checkDest(msg, Internal.InternalMsg.Module.CLIENT);
-        //处理消息
+
         fromConnectorParser.parse(msg, ctx);
     }
 
     class FromConnectorParser extends AbstractMsgParser {
-
-        /**
-         * @description 注册消息处理器,这里实现已读/已送达逻辑
-         */
         @Override
         public void registerParsers() {
-            //注册消息处理逻辑
             InternalParser internalParser = new InternalParser(3);
             internalParser.register(Internal.InternalMsg.MsgType.ACK, (m, ctx) ->
                     serverAckWindow.ack(m));
@@ -107,9 +102,6 @@ public class ClientConnectorHandler extends SimpleChannelInboundHandler<Message>
             offer(id, copy, consumer);
         }
 
-        /**
-         * @description client -> connector
-         */
         private void offer(Long id, Message m, Consumer<Message> consumer) {
             clientAckWindow.offer(id,
                     Internal.InternalMsg.Module.CLIENT,
@@ -118,6 +110,11 @@ public class ClientConnectorHandler extends SimpleChannelInboundHandler<Message>
         }
     }
 
+    /**
+     * @author hodor_zhu
+     * @description use ServerAckWindow, send msg to connector
+     * @date 2023/4/12 23:41
+     */
     public void writeAndFlush(Serializable connectionId, Long msgId, Message message) {
         ServerAckWindow.offer(connectionId, msgId, message, m -> ctx.writeAndFlush(m))
                 .thenAccept(m -> clientMsgListener.hasSent(msgId))

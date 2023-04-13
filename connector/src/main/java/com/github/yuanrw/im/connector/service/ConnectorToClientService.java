@@ -84,9 +84,7 @@ public class ConnectorToClientService {
             cid -> Ack.AckMsg.newBuilder().mergeFrom(ackMsg).setId(IdWorker.nextId(cid)).build());
     }
 
-    /**
-     * @description 根据msg生成delivery消息
-     */
+
     private Ack.AckMsg getDelivered(Serializable connectionId, Chat.ChatMsg msg) {
         return Ack.AckMsg.newBuilder()
             .setId(IdWorker.nextId(connectionId))
@@ -100,13 +98,7 @@ public class ConnectorToClientService {
             .build();
     }
 
-    /**
-     * 发送消息
-     * @param destId
-     * @param msgId
-     * @param generateMsg 参数是connectorId，msg生成逻辑由调用者提供
-     * @return
-     */
+
     private boolean sendMsg(String destId, Long msgId, Function<Serializable, Message> generateMsg) {
         Conn conn = clientConnContext.getConnByUserId(destId);
         if (conn == null) {

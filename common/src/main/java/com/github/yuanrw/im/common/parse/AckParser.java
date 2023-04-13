@@ -2,9 +2,7 @@ package com.github.yuanrw.im.common.parse;
 
 import com.github.yuanrw.im.protobuf.generate.Ack;
 
-/**
- * ACK消息解析器
- */
+
 public class AckParser extends AbstractByEnumParser<Ack.AckMsg.MsgType, Ack.AckMsg> {
 
     public AckParser(int size) {

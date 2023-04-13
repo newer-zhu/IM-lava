@@ -9,9 +9,6 @@ import io.netty.handler.codec.MessageToByteEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * 解决message -> 二进制流 导致的粘包问题
- */
 public class MsgEncoder extends MessageToByteEncoder<Message> {
     private static final Logger logger = LoggerFactory.getLogger(MsgEncoder.class);
 
@@ -21,7 +18,7 @@ public class MsgEncoder extends MessageToByteEncoder<Message> {
             byte[] bytes = msg.toByteArray();
             int code = MsgTypeEnum.getByClass(msg.getClass()).getCode();
             int length = bytes.length;
-            //定义格式解决TCP粘包
+            //regulate message ByteBuf form
             ByteBuf buf = Unpooled.buffer(8 + length);
             buf.writeInt(length);
             buf.writeInt(code);

@@ -53,15 +53,6 @@ public class RestConfig {
     }
 
     @Bean
-    public SimpleRabbitListenerContainerFactory listenerFactory(ConnectionFactory connectionFactory) {
-        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
-        factory.setConnectionFactory(connectionFactory);
-        //手动确认
-        factory.setAcknowledgeMode(AcknowledgeMode.MANUAL);
-        return factory;
-    }
-
-    @Bean
     public Queue offlineQueue() {
         return new Queue(ImConstant.MQ_OFFLINE_QUEUE);
     }

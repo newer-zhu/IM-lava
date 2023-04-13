@@ -17,18 +17,18 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
 /**
- * for client, every connection should has an ServerAckWindow
+ * for client, every connection should have an ClientAckWindow
  */
 public class ClientAckWindow {
     private static Logger logger = LoggerFactory.getLogger(ClientAckWindow.class);
 
     private final int maxSize;
 
-    //是否初次开启
+    //Whether it is turned on for the first time
     private AtomicBoolean first;
-    //窗口里的最后一条消息ID
+    //last msg ID in Window
     private AtomicLong lastId;
-    //不连续消息暂存Map
+    //Discontinuous messages' Map
     private ConcurrentMap<Long, ProcessMsgNode> notContinuousMap;
 
     public ClientAckWindow(int maxSize) {
@@ -49,7 +49,7 @@ public class ClientAckWindow {
      */
     public CompletableFuture<Void> offer(Long id, Internal.InternalMsg.Module from, Internal.InternalMsg.Module dest,
                                          ChannelHandlerContext ctx, Message receivedMsg, Consumer<Message> processFunction) {
-        if (isRepeat(id)) {//重复消息
+        if (isRepeat(id)) {
             ctx.writeAndFlush(getInternalAck(id, from, dest));
             CompletableFuture<Void> future = new CompletableFuture<>();
             future.complete(null);
@@ -57,8 +57,9 @@ public class ClientAckWindow {
         }
 
         ProcessMsgNode msgNode = new ProcessMsgNode(id, from, dest, ctx, receivedMsg, processFunction);
-        if (!isContinuous(id)) {//消息不连续
-            if (notContinuousMap.size() >= maxSize) {//不连续消息缓存达上线
+        if (!isContinuous(id)) {
+            //caching not continuous msgs
+            if (notContinuousMap.size() >= maxSize) {
                 CompletableFuture<Void> future = new CompletableFuture<>();
                 future.completeExceptionally(new ImException("client window is full"));
                 return future;
@@ -66,7 +67,7 @@ public class ClientAckWindow {
             notContinuousMap.put(id, msgNode);
             return msgNode.getFuture();
         }
-        //处理消息
+        //process msg asynchronously
         return processAsync(msgNode);
     }
 
@@ -84,8 +85,9 @@ public class ClientAckWindow {
             .thenComposeAsync(v -> {
                 Long nextId = nextId(node.getId());
                 if (notContinuousMap.containsKey(nextId)) {
-                    //缓存中拿取下一条消息
+                    //get next msg from cache directly
                     ProcessMsgNode nextNode = notContinuousMap.get(nextId);
+                    //recursion
                     return processAsync(nextNode);
                 } else {
                     //that's the newest msg
@@ -99,24 +101,16 @@ public class ClientAckWindow {
     }
 
 
-    /**
-     * 消息是否重复
-     * @param msgId
-     * @return
-     */
     private boolean isRepeat(Long msgId) {
         return msgId <= lastId.get();
     }
 
-    /**
-     * 与上一条消息是否是连续的
-     */
+
     private boolean isContinuous(Long msgId) {
-        //如果是本次会话的第一条消息
         if (first.compareAndSet(true, false)) {
             return true;
         } else {
-            //不是第一条消息，则按照公式算（如果同时有好几条第一条消息，除了真正的第一条，其他会返回false）
+            //if there are lots of "first one"，except the true "first one" others will return false
             return msgId - lastId.get() == 1;
         }
     }

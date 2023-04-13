@@ -12,7 +12,7 @@ import redis.clients.jedis.JedisPoolConfig;
 import java.util.Properties;
 
 /**
- * manage user status in redis
+ * manage users' status in redis Hash Structure
  */
 public class RedisUserStatusServiceImpl implements UserStatusService {
     private static final Logger logger = LoggerFactory.getLogger(RedisUserStatusServiceImpl.class);
@@ -65,6 +65,16 @@ public class RedisUserStatusServiceImpl implements UserStatusService {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return null;
+        }
+    }
+
+    @Override
+    public Boolean isOnline(String userId) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            return jedis.hexists(USER_CONN_STATUS_KEY, userId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return false;
         }
     }
 }

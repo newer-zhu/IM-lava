@@ -11,9 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.FutureTask;
 
-/**
- *
- */
+
 @Singleton
 public class MemoryConnContext<C extends Conn> implements ConnContext<C> {
     private static final Logger logger = LoggerFactory.getLogger(MemoryConnContext.class);

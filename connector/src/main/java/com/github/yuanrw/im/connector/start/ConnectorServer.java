@@ -17,9 +17,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-/**
- * Connector服务端
- */
+
 public class ConnectorServer {
     private static final Logger logger = LoggerFactory.getLogger(ConnectorServer.class);
 
@@ -40,7 +38,8 @@ public class ConnectorServer {
                 }
             });
 
-        ChannelFuture f = bootstrap.bind(new InetSocketAddress(port)).addListener((ChannelFutureListener) future -> {
+        ChannelFuture f = bootstrap.bind(new InetSocketAddress(port))
+                .addListener((ChannelFutureListener) future -> {
             if (future.isSuccess()) {
                 logger.info("[connector] start successfully at port {}, waiting for clients to connect...", port);
             } else {
