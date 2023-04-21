@@ -6,9 +6,7 @@ import com.github.yuanrw.im.rest.spi.domain.UserBase;
 import com.github.yuanrw.im.rest.web.service.UserService;
 import org.springframework.stereotype.Service;
 
-/**
- * 默认用户SPI实现
- */
+
 @Service
 public class DefaultUserSpiImpl implements UserSpi<UserBase> {
 

@@ -7,12 +7,11 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
-/**
- * token管理器
- */
+
 @Service
 public class TokenManager {
 
+    //value is userId
     private static final String SESSION_KEY = "IM:TOKEN:";
     private ReactiveRedisTemplate<String, String> template;
 
@@ -21,9 +20,9 @@ public class TokenManager {
     }
 
     /**
-     * 校验token并更新过期时间
-     * @param token
-     * @return
+     * @author hodor_zhu
+     * @description  refresh token and return userId
+     * @date 2023/4/16 0:09
      */
     public Mono<String> validateToken(String token) {
         return template.opsForValue().get(SESSION_KEY + token).map(id -> {
@@ -33,7 +32,7 @@ public class TokenManager {
     }
 
     /**
-     * 创建新token
+     * create a token
      * @param userId
      * @return
      */
@@ -44,11 +43,7 @@ public class TokenManager {
             .flatMap(b -> b ? Mono.just(token) : Mono.empty());
     }
 
-    /**
-     * 过期token
-     * @param token
-     * @return
-     */
+
     public Mono<Boolean> expire(String token) {
         return template.delete(SESSION_KEY + token).map(l -> l > 0);
     }

@@ -10,9 +10,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-/**
- * SPI机制，返回各种使用者自定义的类
- */
 @Component
 public class SpiFactory implements ApplicationContextAware {
 

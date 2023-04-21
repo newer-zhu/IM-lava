@@ -43,11 +43,7 @@ public class ConnectorTransferHandler extends SimpleChannelInboundHandler<Messag
         this.connectorToClientService = connectorToClientService;
     }
 
-    /**
-     * 根据time取模取出一个ctx
-     * @param time
-     * @return
-     */
+
     public static ChannelHandlerContext getOneOfTransferCtx(long time) {
         if (ctxList.size() == 0) {
             logger.warn("connector is not connected to a transfer!");

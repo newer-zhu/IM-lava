@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class ClientConn extends AbstractConn {
 
+    //this indicates that how many ClientConn exist
     private static final AtomicLong NETID_GENERATOR = new AtomicLong(0);
 
     private String userId;

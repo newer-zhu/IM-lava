@@ -21,7 +21,7 @@ import java.util.function.Consumer;
  */
 public class ClientAckWindow {
     private static Logger logger = LoggerFactory.getLogger(ClientAckWindow.class);
-
+    //cache size for sender
     private final int maxSize;
 
     //Whether it is turned on for the first time

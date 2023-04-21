@@ -15,9 +15,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
-/**
- * 全局异常返回
- */
+
 @Component
 @Order(-2)
 public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHandler {

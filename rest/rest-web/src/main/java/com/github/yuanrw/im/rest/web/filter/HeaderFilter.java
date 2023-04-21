@@ -7,9 +7,7 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
-/**
- * token校验过滤器
- */
+
 @Component
 public class HeaderFilter implements WebFilter {
 

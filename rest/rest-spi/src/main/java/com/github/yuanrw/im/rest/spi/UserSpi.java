@@ -2,6 +2,8 @@ package com.github.yuanrw.im.rest.spi;
 
 import com.github.yuanrw.im.rest.spi.domain.UserBase;
 
+import java.util.List;
+
 /**
  * for custom
  */

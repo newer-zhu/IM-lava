@@ -40,7 +40,7 @@ public class ConnectorToClientService {
                 msg.getDestId(), ConnectorTransferHandler.CONNECTOR_ID);
             return;
         }
-        //change msg id
+        //change msg id+1
         Chat.ChatMsg copy = Chat.ChatMsg.newBuilder().mergeFrom(msg)
             .setId(IdWorker.nextId(conn.getNetId())).build();
         conn.getCtx().writeAndFlush(copy);

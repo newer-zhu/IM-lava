@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Module to generate id, some id generator
- * such like snowFlake is depend on local machine time,
+ * such like snowFlake is depended on local machine time,
  * so it's better to deploy this module independently.
  * Date: 2019-05-06
  * Time: 20:09

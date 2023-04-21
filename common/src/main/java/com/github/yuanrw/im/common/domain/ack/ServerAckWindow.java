@@ -24,7 +24,10 @@ public class ServerAckWindow {
     private static Logger logger = LoggerFactory.getLogger(ServerAckWindow.class);
     private final Duration timeout;
     private final int maxSize;
-    //store ServerAckWindow, distinguished by connectionId, which is unique for each session.
+
+    /** store ServerAckWindows, distinguished by key.
+     * key is netId in ClientConn or connectionId in ClientConnectorHandler
+     */
     private static Map<Serializable, ServerAckWindow> windowsMap;
     private static ExecutorService executorService;
     //key is chat/message id, when a msg is sent but didn't receive an ack, then it'll stay in here.

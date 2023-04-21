@@ -99,6 +99,7 @@ public class ConnectorClientHandler extends SimpleChannelInboundHandler<Message>
             register(Internal.InternalMsg.class, parser.generateFun());
         }
 
+        //offerXXX() actually call offer()
         private void offerChat(Long id, Chat.ChatMsg m, ChannelHandlerContext ctx, Consumer<Message> consumer) {
             Chat.ChatMsg copy = Chat.ChatMsg.newBuilder().mergeFrom(m).build();
             offer(id, copy, ctx, consumer);

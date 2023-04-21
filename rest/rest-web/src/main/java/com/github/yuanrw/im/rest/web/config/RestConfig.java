@@ -52,10 +52,6 @@ public class RestConfig {
         return 1;
     }
 
-    @Bean
-    public Queue offlineQueue() {
-        return new Queue(ImConstant.MQ_OFFLINE_QUEUE);
-    }
 
     @Bean
     public ReactiveRedisTemplate<String, String> reactiveRedisTemplateString

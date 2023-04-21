@@ -58,7 +58,7 @@ public class UserOnlineService {
             }
         });
 
-        //save connection
+        //save connection to clientConnContext
         ClientConn conn = new ClientConn(ctx);
         conn.setUserId(userId);
         clientConnContext.addConn(conn);
