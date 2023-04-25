@@ -32,7 +32,10 @@ public class ImClient{
     private static Logger logger = LoggerFactory.getLogger(ImClient.class);
 
     public Injector injector;
+    //each <Client> should have an unique connectionId
     public final String connectionId = IdWorker.uuid();
+    //for identifying different devices
+    public String deviceId;
 
     private String connectorHost;
     private Integer connectorPort;
@@ -40,28 +43,37 @@ public class ImClient{
     private UserContext userContext;
     private ClientConnectorHandler handler;
 
-    public ImClient(String connectorHost, Integer connectorPort, String restUrl) {
-        this(connectorHost, connectorPort, restUrl, null);
+    public ImClient(String connectorHost, Integer connectorPort, String restUrl, String deviceId) {
+        this(connectorHost, connectorPort, restUrl, deviceId, null);
     }
 
-    public ImClient(String connectorHost, Integer connectorPort, String restUrl, ClientMsgListener clientMsgListener) {
+    /**
+     * @author hodor_zhu
+     * @description set all at one time
+     * @date 2023/4/22 0:40
+     */
+    public ImClient(String connectorHost, Integer connectorPort, String restUrl, String deviceId,
+                    ClientMsgListener clientMsgListener) {
         assert connectorHost != null;
         assert connectorPort != null;
         assert restUrl != null;
+        assert deviceId != null;
 
         this.connectorHost = connectorHost;
         this.connectorPort = connectorPort;
+        this.deviceId = deviceId;
         this.clientMsgListener = clientMsgListener;
 
         ClientRestServiceProvider.REST_URL = restUrl;
         this.injector = Guice.createInjector(new ClientModule());
     }
 
+
     public void start() {
         assert clientMsgListener != null;
 
         userContext = injector.getInstance(UserContext.class);
-        handler = new ClientConnectorHandler(clientMsgListener, connectionId);
+        handler = new ClientConnectorHandler(clientMsgListener, connectionId, deviceId);
         userContext.setClientConnectorHandler(handler);
 
         startImClient(handler);

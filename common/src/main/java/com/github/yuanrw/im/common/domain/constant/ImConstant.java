@@ -8,9 +8,9 @@ package com.github.yuanrw.im.common.domain.constant;
  */
 public class ImConstant {
 
-    public static final String MQ_EXCHANGE = "im";
-    public static final String MQ_OFFLINE_QUEUE = "im_offline";
-    public static final String MQ_ROUTING_KEY = "im_offline";
+    public static final String DEVICE_ID = "deviceId";
+
+    public static final Integer ONLINE_SAMETIME = 3;
 
     public static final String KAFKA_TOPIC = "offline_msgs";
 }

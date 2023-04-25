@@ -8,7 +8,7 @@ import com.google.inject.Inject;
 import java.util.List;
 
 /**
- * 用户上下文
+ * save user's info
  */
 public class UserContext {
 

@@ -67,7 +67,7 @@ public class UserOnlineService {
         String oldConnectorId = userStatusService.online(userId, ConnectorTransferHandler.CONNECTOR_ID);
         if (oldConnectorId != null) {
             //can't online twice
-            sendErrorToClient("user already online", ctx);
+            sendErrorToClient("user already online with the same device ID!", ctx);
         }
 
         return conn;

@@ -23,6 +23,7 @@ import java.util.function.Consumer;
 public class ServerAckWindow {
     private static Logger logger = LoggerFactory.getLogger(ServerAckWindow.class);
     private final Duration timeout;
+    //maxsize for unAcked msgs
     private final int maxSize;
 
     /** store ServerAckWindows, distinguished by key.
@@ -30,7 +31,7 @@ public class ServerAckWindow {
      */
     private static Map<Serializable, ServerAckWindow> windowsMap;
     private static ExecutorService executorService;
-    //key is chat/message id, when a msg is sent but didn't receive an ack, then it'll stay in here.
+    //key is message id, when a msg is sent but didn't receive an ack, then it'll stay in here.
     private ConcurrentHashMap<Long, ResponseCollector<Internal.InternalMsg>> responseCollectorMap;
 
     static {

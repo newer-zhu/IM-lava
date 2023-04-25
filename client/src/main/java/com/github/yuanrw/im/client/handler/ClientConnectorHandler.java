@@ -3,6 +3,7 @@ package com.github.yuanrw.im.client.handler;
 import com.github.yuanrw.im.client.api.ClientMsgListener;
 import com.github.yuanrw.im.common.domain.ack.ClientAckWindow;
 import com.github.yuanrw.im.common.domain.ack.ServerAckWindow;
+import com.github.yuanrw.im.common.domain.constant.ImConstant;
 import com.github.yuanrw.im.common.parse.AbstractMsgParser;
 import com.github.yuanrw.im.common.parse.AckParser;
 import com.github.yuanrw.im.common.parse.InternalParser;
@@ -13,6 +14,7 @@ import com.github.yuanrw.im.protobuf.generate.Internal;
 import com.google.protobuf.Message;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,11 +36,14 @@ public class ClientConnectorHandler extends SimpleChannelInboundHandler<Message>
     private ClientAckWindow clientAckWindow;
 
     private String connectionId;
-    public ClientConnectorHandler(ClientMsgListener clientMsgListener, String connectionId) {
+    private String deviceId;
+
+    public ClientConnectorHandler(ClientMsgListener clientMsgListener, String connectionId, String deviceId) {
         assert clientMsgListener != null;
 
         this.clientMsgListener = clientMsgListener;
         this.connectionId = connectionId;
+        this.deviceId = deviceId;
         this.fromConnectorParser = new FromConnectorParser();
     }
 
@@ -49,6 +54,7 @@ public class ClientConnectorHandler extends SimpleChannelInboundHandler<Message>
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        ctx.channel().attr(AttributeKey.newInstance(ImConstant.DEVICE_ID)).set(this.deviceId);
         this.ctx = ctx;
         serverAckWindow = new ServerAckWindow(connectionId, 10, Duration.ofSeconds(5));
         clientAckWindow = new ClientAckWindow(5);
@@ -78,7 +84,7 @@ public class ClientConnectorHandler extends SimpleChannelInboundHandler<Message>
             internalParser.register(Internal.InternalMsg.MsgType.ACK, (m, ctx) ->
                     serverAckWindow.ack(m));
             internalParser.register(Internal.InternalMsg.MsgType.ERROR, (m, ctx) ->
-                    logger.error("[client] get error from connector {}", m.getMsgBody()));
+                    logger.error("[client] get error from connector: {}", m.getMsgBody()));
 
             AckParser ackParser = new AckParser(2);
             ackParser.register(Ack.AckMsg.MsgType.DELIVERED, (m, ctx) ->

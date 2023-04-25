@@ -40,7 +40,6 @@ public class ConnectorConnContext extends MemoryConnContext<ConnectorConn> {
             if (conn != null) {
                 return conn;
             } else {
-                //connectorId outdated
                 userStatusService.offline(userId);
             }
         }

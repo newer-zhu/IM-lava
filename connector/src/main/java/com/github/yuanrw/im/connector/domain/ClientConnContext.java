@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Executors;
 
 /**
- * hold relation between Client Connection and userId
+ * hold relation between Client-Connection and userId
  */
 @Singleton
 public class ClientConnContext extends MemoryConnContext<ClientConn> {

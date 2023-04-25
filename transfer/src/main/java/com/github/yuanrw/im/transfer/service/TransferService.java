@@ -32,6 +32,10 @@ public class TransferService {
         this.producer = TransferStarter.kafkaProducer;
     }
 
+    /**
+     * @description find dest_user's connector-connection and transfer the chat msg
+     * @date 2023/4/25 15:43
+     */
     public void doChat(Chat.ChatMsg msg) throws IOException {
         ConnectorConn conn = connContext.getConnByUserId(msg.getDestId());
 
@@ -42,6 +46,10 @@ public class TransferService {
         }
     }
 
+    /**
+     * @description find dest_user's ConnectorConn and transfer the ack msg
+     * @date 2023/4/25 15:43
+     */
     public void doSendAck(Ack.AckMsg msg) throws IOException {
         ConnectorConn conn = connContext.getConnByUserId(msg.getDestId());
 
@@ -53,9 +61,10 @@ public class TransferService {
     }
 
     /**
-     * first connection, set the NET_ID and save it to connContext's map
+     * set the netId from message body and save the ConnectorConn to connContext's map
      */
     public void doGreet(Internal.InternalMsg greetMsg, ChannelHandlerContext ctx) {
+        //greetMsg's MsgBody is snowGenId, will be the netId as the key in connContext's map
         ctx.channel().attr(Conn.NET_ID).set(greetMsg.getMsgBody());
         ConnectorConn conn = new ConnectorConn(ctx);
         connContext.addConn(conn);

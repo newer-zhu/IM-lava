@@ -8,8 +8,6 @@ import com.github.yuanrw.im.client.domain.Friend;
 import com.github.yuanrw.im.common.domain.UserInfo;
 import com.github.yuanrw.im.protobuf.generate.Chat;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.util.CharsetUtil;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,6 +44,7 @@ public class MyClient {
         for (Friend friend : friends) {
             System.out.println(friend.getUserId() + ": " + friend.getUsername());
         }
+        System.out.println("===============================");
     }
 
     /**
@@ -56,44 +55,50 @@ public class MyClient {
      * @return
      */
     private ImClient start(String connectorHost, Integer connectorPort, String restUrl) {
-        ImClient imClient = new ImClient(connectorHost, connectorPort, restUrl);
+        ImClient imClient = new ImClient(connectorHost, connectorPort, restUrl, "deviceId");
         imClient.setClientMsgListener(new ClientMsgListener() {
             @Override
             public void online() {
                 logger.info("[client] i have connected to server!");
+                System.out.println("========online=========");
             }
 
             @Override
             public void read(Chat.ChatMsg chatMsg) {
-                //when it's confirmed that user has read this msg
                 System.out.println(friendMap.get(chatMsg.getFromId()).getUsername() + ": "
                     + chatMsg.getMsgBody().toStringUtf8());
                 chatApi.confirmRead(chatMsg);
+                System.out.println("========read=========");
             }
 
             @Override
             public void hasSent(Long id) {
                 System.out.println(String.format("msg {%d} has been sent", id));
+                System.out.println("========hasSent=========");
             }
 
             @Override
             public void hasDelivered(Long id) {
                 System.out.println(String.format("msg {%d} has been delivered", id));
+                System.out.println("========hasDelivered=========");
             }
 
             @Override
             public void hasRead(Long id) {
                 System.out.println(String.format("msg {%d} has been read", id));
+                System.out.println("========hasRead=========");
             }
 
             @Override
             public void offline() {
                 logger.info("[{}] I am offline!", userInfo != null ? userInfo.getUsername() : "client");
+                System.out.println("========offline=========");
             }
 
             @Override
             public void hasException(ChannelHandlerContext ctx, Throwable cause) {
                 logger.error("[" + userInfo.getUsername() + "] has error ", cause);
+                System.out.println("========hasException=========");
             }
         });
 
